@@ -15,7 +15,7 @@ console.log(store.getState());
 store.dispatch(addTodo('default1'));
 store.dispatch(addTodo('default2'));
 
-// unsubScribe();
+store.subscribe(() => console.log(store.getState()));
 
 const Main = () => (
   <Provider store={store}>

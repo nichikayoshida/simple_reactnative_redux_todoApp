@@ -20,6 +20,7 @@ export default class TodoList extends Component {
 
   render() {
     const { todos } = this.props;
+    console.log('render');
     return (
       <FlatList
         data={todos}

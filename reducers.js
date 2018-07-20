@@ -1,23 +1,25 @@
 import { combineReducers } from 'redux';
 import {
-  VisibilityFilters, SET_VISIBILITY_FILTER, ADD_TODO, TOGGLE_TODO,
+  VisibilityFilters,
+  SET_VISIBILITY_FILTER,
+  ADD_TODO,
+  TOGGLE_TODO,
+  REFRESH_TEXTINPUT,
+  CLEAR_TEXTINPUT,
 } from './actions';
-
-// const initialState = {
-//   visibiltyFilter: VisibilityFilters.SHOW_ALL,
-//   todos: [],
-// };
 
 function todos(state = [], action) {
   switch (action.type) {
     case ADD_TODO:
-      return [
-        ...state,
-        {
-          text: action.text,
-          completed: false,
-        },
-      ];
+      return action.text !== ''
+        ? [
+          ...state,
+          {
+            text: action.text,
+            completed: false,
+          },
+        ]
+        : [...state];
     case TOGGLE_TODO:
       return state.map((todo, index) => {
         if (index === action.index) {
@@ -42,37 +44,21 @@ function visibilityFilter(state = VisibilityFilters.SHOW_ALL, action) {
   }
 }
 
-// function todoApp(state = initialState, action) {
-//   switch (action.type) {
-//     case SET_VISIBILITY_FILTER:
-//       return {
-//         ...state,
-//         visibiltyFilter: visibilityFilter(state, action),
-//       };
-//     case ADD_TODO:
-//     case TOGGLE_TODO:
-//       return {
-//         ...state,
-//         todos: todos(state, action),
-//       };
-//     default:
-//       return state;
-//   }
-// }
-//
+function textInput(state = '', action) {
+  switch (action.type) {
+    case REFRESH_TEXTINPUT:
+      return action.text;
+    case CLEAR_TEXTINPUT:
+      return '';
+    default:
+      return state;
+  }
+}
 
-// function todoApp(state = {}, action) {
-//   return {
-//     visibiltyFilter: visibilityFilter(state.visibiltyFilter, action),
-//     todos: todos(state.todos, action),
-//   };
-// }
-//
-
-// 多分、combineReducersを使うためには、stateの各キー名とそのreducerを同名にする必要がある
 const todoApp = combineReducers({
   visibilityFilter,
   todos,
+  textInput,
 });
 
 export default todoApp;
